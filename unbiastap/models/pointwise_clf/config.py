@@ -30,6 +30,14 @@ class IPSXGBoostHyperparams(BaseModel):
 
 class IPSXGBoostConfig(PointwiseClfConfig):
     model_config = ConfigDict(extra="forbid")
+    exposure_propensity_column: str = Field(
+        "exposure_propensity",
+        description=(
+            "The name of the column in the dataset that contains the "
+            "propensity scores for exposure. These scores are used to "
+            "compute the importance weights for the IPS estimator."
+        ),
+    )
     hyperparams: IPSXGBoostHyperparams = Field(
         default_factory=IPSXGBoostHyperparams,
         description="Hyperparameters for the XGBoost model.",
