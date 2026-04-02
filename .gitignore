@@ -26,8 +26,7 @@ data/
 *.pkl
 *.joblib
 
-# Models / artifacts
-models/
+# Model artifacts
 artifacts/
 *.pt
 *.pth
