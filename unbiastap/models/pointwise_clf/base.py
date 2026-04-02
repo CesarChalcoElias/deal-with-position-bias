@@ -1,7 +1,10 @@
+import logging
 import pandas as pd
 
 from unbiastap.models.base import BaseModelAdapter
 from unbiastap.models.pointwise_clf.config import BasePointwiseClfConfig
+
+logger = logging.getLogger(__name__)
 
 class BasePointwiseClfAdapter(BaseModelAdapter):
     def __init__(self, config: BasePointwiseClfConfig):
@@ -35,10 +38,17 @@ class BasePointwiseClfAdapter(BaseModelAdapter):
 
     def _ensure_fitted(self):
         if not self.is_fitted:
+            logger.error(
+                "%s.predict called before fit", type(self).__name__
+            )
             raise RuntimeError(
                 "Model must be fitted before making predictions."
             )
     
     def _validate_data_format(self, data):
         if not isinstance(data, pd.DataFrame):
+            logger.error(
+                "Expected input data to be a pandas DataFrame, but got %s",
+                type(data).__name__
+            )
             raise ValueError("Input data must be a pandas DataFrame.")
