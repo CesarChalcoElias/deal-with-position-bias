@@ -1,6 +1,5 @@
 from abc import ABC, abstractmethod
 
-
 class BaseModelAdapter(ABC):
     def __init__(self) -> None:
         self.is_fitted = False
