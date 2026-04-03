@@ -2,7 +2,7 @@ from typing import Any
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
-class PointwiseClfConfig(BaseModel):
+class BasePointwiseClfConfig(BaseModel):
     model_config = ConfigDict(extra="forbid")
     label_column: str = Field(
         ...,
@@ -28,7 +28,7 @@ class IPSXGBoostHyperparams(BaseModel):
     colsample_bytree: float = 0.8
     random_state: int = 42
 
-class IPSXGBoostConfig(PointwiseClfConfig):
+class IPSXGBoostConfig(BasePointwiseClfConfig):
     model_config = ConfigDict(extra="forbid")
     exposure_propensity_column: str = Field(
         "exposure_propensity",
