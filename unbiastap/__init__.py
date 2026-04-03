@@ -1,3 +1,4 @@
+from unbiastap.utils.config import load_config
 from unbiastap.models.pointwise_clf.ips_xgboost import IPSXGBoostAdapter
 from unbiastap.models.pointwise_clf.config import (
     IPSXGBoostConfig,
@@ -5,7 +6,8 @@ from unbiastap.models.pointwise_clf.config import (
 )
 
 __all__ = [
-    "IPSXGBoost",
+    "IPSXGBoostAdapter",
     "IPSXGBoostConfig",
-    "IPSXGBoostHyperparams"
+    "IPSXGBoostHyperparams",
+    "load_config"
 ]
