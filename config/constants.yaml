@@ -1,0 +1,39 @@
+general:
+  random_seed: 42
+  data_dir: "data"
+  raw_file: "train.csv"
+
+ranking:
+  max_position: 38 #arbitrary cutoff for PLP
+  fold_position: 5  # assumed above-the-fold boundary for PLP
+
+carousel:
+  window_size: 4    # slots visible simultaneously
+  max_rows: 9       # floor(38 / 4) rounded
+  within_window_weights: [1.0, 0.82, 0.65, 0.48]  # attention decay left→right (eye-tracking)
+
+features:
+  columns:
+    - "price_usd"
+    - "prop_starrating"
+    - "prop_review_score"
+    - "prop_brand_bool"
+    - "prop_location_score1"
+    - "prop_location_score2"
+    - "srch_adults_count"
+    - "srch_children_count"
+    - "srch_room_count"
+    - "srch_length_of_stay"
+    - "srch_booking_window"
+    - "promotion_flag"
+
+debiasing:
+  ips:
+    eta: 0.9              # power-law decay exponent for PLP
+    sequential_dropout: 0.75  # estimated continuation rate for sequential model
+    clip_threshold: 0.05  # minimum propensity floor for clipped IPS
+
+  em_algorithm:           # regression-based EM (Wang et al. 2018)
+    n_iter: 10            # paper shows convergence ~10
+    gbm_depth: 3          # GBDT max_depth for M-step (paper: depth-3 trees)
+    gbm_lr: 0.2           # GBDT shrinkage for M-step (paper: shrinkage 0.2)
