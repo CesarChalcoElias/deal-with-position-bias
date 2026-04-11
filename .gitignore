@@ -50,3 +50,4 @@ wandb/
 .env.*
 *.key
 CLAUDE.md
+GUIDE.md
