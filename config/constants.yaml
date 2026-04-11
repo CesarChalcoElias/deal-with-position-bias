@@ -12,6 +12,10 @@ carousel:
   max_rows: 9       # floor(38 / 4) rounded
   within_window_weights: [1.0, 0.82, 0.65, 0.48]  # attention decay left→right (eye-tracking)
 
+target:
+  click_col: "click_bool"
+  booking_col: "booking_bool"
+
 features:
   columns:
     - "price_usd"
@@ -29,9 +33,9 @@ features:
 
 debiasing:
   ips:
-    eta: 0.9              # power-law decay exponent for PLP
-    sequential_dropout: 0.75  # estimated continuation rate for sequential model
-    clip_threshold: 0.05  # minimum propensity floor for clipped IPS
+    eta: 0.9
+    clip_threshold: 0.05
+    sequential_dropout: 0.9
 
   em_algorithm:           # regression-based EM (Wang et al. 2018)
     n_iter: 10            # paper shows convergence ~10
