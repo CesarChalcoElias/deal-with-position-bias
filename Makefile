@@ -12,6 +12,10 @@ help:
 	@echo "  clean       Remove build artifacts and cache directories"
 	@echo "  build       Build wheel distribution"
 
+clean:
+	@rm -rf dist/ .mypy_cache/ .ruff_cache/ .pytest_cache/
+	@find . -type d -name __pycache__ -exec rm -rf {} +
+
 install:
 	@poetry install
 
@@ -25,7 +29,8 @@ remove:
 	@poetry remove $(PKG)
 
 test:
-	@poetry run pytest tests/ -v
+	@poetry run pytest tests/ -vvv
+	clean
 
 format:
 	@poetry run ruff format unbiastap tests
@@ -39,7 +44,3 @@ lint:
 	@poetry run ruff check unbiastap tests
 
 ready: fmt lint test
-
-clean:
-	@rm -rf dist/ .mypy_cache/ .ruff_cache/ .pytest_cache/
-	@find . -type d -name __pycache__ -exec rm -rf {} +
