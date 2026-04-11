@@ -7,7 +7,8 @@ from unbiastap.data.datasets import (
 )
 from unbiastap.models.pointwise_clf.ips_xgboost import IPSXGBoostAdapter
 from unbiastap.models.custom.clip_selector import ClipSelector
-from unbiastap.models.custom.config import ClipSelectorConfig
+from unbiastap.models.custom.config import ClipSelectorConfig, ShrinkageSelectorConfig
+from unbiastap.models.custom.shrinkage_selector import ShrinkageSelector
 from unbiastap.models.pointwise_clf.config import (
     IPSXGBoostConfig,
     IPSXGBoostHyperparams,
@@ -26,4 +27,6 @@ __all__ = [
     "train_test_split_by_session",
     "ClipSelector",
     "ClipSelectorConfig",
+    "ShrinkageSelector",
+    "ShrinkageSelectorConfig",
 ]

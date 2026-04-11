@@ -32,7 +32,6 @@ class IPSXGBoostHyperparams(BaseModel):
 
 
 class IPSXGBoostConfig(BasePointwiseClfConfig):
-    model_config = ConfigDict(extra="forbid")
     exposure_propensity_column: str = Field(
         "exposure_propensity",
         description=(
