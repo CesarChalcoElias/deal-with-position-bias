@@ -2,6 +2,7 @@ from typing import Any
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
+
 class BasePointwiseClfConfig(BaseModel):
     model_config = ConfigDict(extra="forbid")
     label_column: str = Field(
@@ -19,6 +20,7 @@ class BasePointwiseClfConfig(BaseModel):
         ),
     )
 
+
 class IPSXGBoostHyperparams(BaseModel):
     model_config = ConfigDict(extra="forbid")
     max_depth: int = 8
@@ -27,6 +29,7 @@ class IPSXGBoostHyperparams(BaseModel):
     subsample: float = 0.8
     colsample_bytree: float = 0.8
     random_state: int = 42
+
 
 class IPSXGBoostConfig(BasePointwiseClfConfig):
     model_config = ConfigDict(extra="forbid")
@@ -58,21 +61,18 @@ class IPSXGBoostConfig(BasePointwiseClfConfig):
     def normalize_flat_payload(cls, value: Any) -> Any:
         if not isinstance(value, dict):
             raise ValueError("Input must be a dictionary.")
-        
+
         hyperparams_keys = set(IPSXGBoostHyperparams.model_fields.keys())
 
         flat_hp = {k: v for k, v in value.items() if k in hyperparams_keys}
 
-        if flat_hp:                                                                                                              
+        if flat_hp:
             value = {
                 **value,
-                "hyperparams": {
-                    **value.get("hyperparams", {}), **flat_hp
-                }
+                "hyperparams": {**value.get("hyperparams", {}), **flat_hp},
             }
             value = {
                 k: v for k, v in value.items() if k not in hyperparams_keys
             }
-                                                                                                                                
-        return value 
 
+        return value

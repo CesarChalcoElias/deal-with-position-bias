@@ -12,6 +12,7 @@ from unbiastap.models.pointwise_clf.config import IPSXGBoostConfig
 
 logger = logging.getLogger(__name__)
 
+
 class IPSXGBoostAdapter(BasePointwiseClfAdapter):
     def __init__(self, config: IPSXGBoostConfig):
         super().__init__(config)
@@ -44,14 +45,18 @@ class IPSXGBoostAdapter(BasePointwiseClfAdapter):
         weights = np.clip(weights, a_min=None, a_max=clip_value)
         logger.debug(
             "IPS weights — min: %.4f, mean: %.4f, max: %.4f",
-            weights.min(), weights.mean(), weights.max(),
+            weights.min(),
+            weights.mean(),
+            weights.max(),
         )
         return weights
 
     def fit(self, data: pd.DataFrame):
         logger.info(
             "Fitting %s on %d samples with %d features",
-            type(self).__name__, len(data), len(self.config.features),
+            type(self).__name__,
+            len(data),
+            len(self.config.features),
         )
         self._ensure_dataframe(data)
         sample_weights = self._compute_ips_weights(data)
@@ -96,6 +101,49 @@ class IPSXGBoostAdapter(BasePointwiseClfAdapter):
         logger.info("%s loaded successfully", cls.__name__)
         return adapter
 
+    def plot_clip_stability(
+        self,
+        data: pd.DataFrame,
+        percentile_range: tuple = (50.0, 99.9),
+        n_points: int = 100,
+    ):
+        import matplotlib.pyplot as plt
+        import seaborn as sns
+
+        if self.config.exposure_propensity_column not in data.columns:
+            raise ValueError(
+                f"Exposure propensity column "
+                f"'{self.config.exposure_propensity_column}' col is missing."
+            )
+
+        propensity = data[self.config.exposure_propensity_column].to_numpy()
+        weights = 1.0 / propensity
+        percentiles = np.linspace(
+            percentile_range[0], percentile_range[1], n_points
+        )
+        clip_values = np.array(
+            [np.percentile(weights, p) for p in percentiles]
+        )
+
+        fig, ax = plt.subplots(figsize=(10, 5))
+        ax.plot(percentiles, clip_values, color="steelblue")
+        ax.axvline(
+            x=self.config.weight_clip_percentile,
+            color="red",
+            linestyle="--",
+            label=(
+                "configured percentile "
+                f"({self.config.weight_clip_percentile})"
+            ),
+        )
+        ax.set_xlabel("Percentile")
+        ax.set_ylabel("Clip threshold")
+        ax.set_title("IPS weight clip threshold stability")
+        ax.legend()
+        sns.despine()
+        fig.tight_layout()
+        return fig
+
     def get_shap_booster(self):
-        self._ensure_fitted()   
+        self._ensure_fitted()
         return self.model_.get_booster()
