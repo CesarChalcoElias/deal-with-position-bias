@@ -2,8 +2,6 @@ from pydantic import BaseModel, ConfigDict, Field, field_validator
 
 
 class ClipSelectorConfig(BaseModel):
-    model_config = ConfigDict(extra="forbid")
-
     n_grid_points: int = Field(
         100,
         description=(
