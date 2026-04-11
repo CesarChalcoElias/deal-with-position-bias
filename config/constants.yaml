@@ -4,17 +4,11 @@ general:
   raw_file: "train.csv"
 
 ranking:
-  max_position: 38 #arbitrary cutoff for PLP
-  fold_position: 5  # assumed above-the-fold boundary for PLP
-
-carousel:
-  window_size: 4    # slots visible simultaneously
-  max_rows: 9       # floor(38 / 4) rounded
-  within_window_weights: [1.0, 0.82, 0.65, 0.48]  # attention decay left→right (eye-tracking)
+  max_position: 38
+  fold_position: 5
 
 target:
   click_col: "click_bool"
-  booking_col: "booking_bool"
 
 features:
   columns:
@@ -33,11 +27,4 @@ features:
 
 debiasing:
   ips:
-    eta: 0.9
-    clip_threshold: 0.05
     sequential_dropout: 0.9
-
-  em_algorithm:           # regression-based EM (Wang et al. 2018)
-    n_iter: 10            # paper shows convergence ~10
-    gbm_depth: 3          # GBDT max_depth for M-step (paper: depth-3 trees)
-    gbm_lr: 0.2           # GBDT shrinkage for M-step (paper: shrinkage 0.2)
