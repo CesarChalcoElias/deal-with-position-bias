@@ -1,5 +1,7 @@
 # Dealing with Position Bias for Tap Propensity
 
+![banner image](./img/banner.jpeg)
+
 Most click models are wrong in the same way: they treat a click at position 1 and
 a click at position 10 as equal signal. They are not. Position bias is one of the
 most common and least corrected sources of noise in industrial ranking systems.
