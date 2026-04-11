@@ -8,6 +8,7 @@ __pycache__/
 dist/
 build/
 .eggs/
+.ruff_cache/
 
 # Virtual environments
 .venv/
@@ -49,6 +50,6 @@ wandb/
 .env
 .env.*
 *.key
-CLAUDE.md
+.claude
 GUIDE.md
 docs/
