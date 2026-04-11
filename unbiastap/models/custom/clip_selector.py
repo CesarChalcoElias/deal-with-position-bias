@@ -1,6 +1,7 @@
 import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt
+from scipy.stats import percentileofscore
 
 from unbiastap.models.custom.config import ClipSelectorConfig
 
@@ -9,6 +10,7 @@ class ClipSelector:
     def __init__(self, config: ClipSelectorConfig):
         self.config = config
         self.clip_value_: float | None = None
+        self.clip_percentile_: float | None = None
         self.ess_curve_: np.ndarray | None = None
 
     @staticmethod
@@ -47,6 +49,7 @@ class ClipSelector:
             )
 
         self.clip_value_ = float(grid[valid_mask][-1])
+        self.clip_percentile_ = round(percentileofscore(weights, self.clip_value_), 2)
         return self
 
     def plot_ess_curve(self, tau: float | None = None):
