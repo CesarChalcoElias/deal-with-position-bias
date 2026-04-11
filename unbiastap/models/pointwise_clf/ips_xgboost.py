@@ -137,8 +137,8 @@ class IPSXGBoostAdapter(BasePointwiseClfAdapter):
             ),
         )
         ax.set_xlabel("Percentile")
-        ax.set_ylabel("Clip threshold")
-        ax.set_title("IPS weight clip threshold stability")
+        ax.set_ylabel("Weight")
+        ax.set_title("IPS weight by percentile threshold")
         ax.legend()
         sns.despine()
         fig.tight_layout()
