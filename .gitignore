@@ -51,3 +51,4 @@ wandb/
 *.key
 CLAUDE.md
 GUIDE.md
+docs/
